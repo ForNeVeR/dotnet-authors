@@ -25,6 +25,7 @@ jobs:
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_NOLOGO: 1
+      NUGET_PACKAGES: ${{ github.workspace }}/.github/nuget-packages
     steps:
       - name: Check out the sources
         uses: actions/checkout@v4
@@ -32,7 +33,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-          cache: true
+      - name: NuGet cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}.nuget.${{ hashFiles('**/*.csproj') }}
+          path: ${{ env.NUGET_PACKAGES }}
       - name: Build
         run: dotnet build
 
