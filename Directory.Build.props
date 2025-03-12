@@ -1,0 +1,20 @@
+﻿<!--
+SPDX-FileCopyrightText: 2024-2025 Friedrich von Never <friedrich@fornever.me>
+
+SPDX-License-Identifier: MIT
+-->
+
+<Project>
+    <PropertyGroup Label="Packaging">
+        <Version>0.0.0</Version>
+        <!-- REUSE-IgnoreStart -->
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>2024-2025 Friedrich von Never &lt;friedrich@fornever.me&gt;</Copyright>
+        <!-- REUSE-IgnoreEnd -->
+    </PropertyGroup>
+
+    <PropertyGroup Label="Build">
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+</Project>
