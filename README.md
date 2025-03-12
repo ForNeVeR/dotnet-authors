@@ -8,6 +8,25 @@ dotnet-authors [![Status Zero][status-zero]][andivionian-status-classifier]
 ==============
 This is a tool for OSS projects to keep the project author list and update copyright statements in the project files whenever they are changed.
 
+Installation
+------------
+Install as a dotnet tool: either
+```console
+$ dotnet tool install --global FVNever.DotNetAuthors
+```
+for global installation or
+```console
+$ dotnet new tool-manifest
+$ dotnet tool install FVNever.DotNetAuthors
+```
+for local solution-wide installation.
+
+Usage
+-----
+After installation, the tool will be available in shell as `dotnet authors`.
+
+For now, its only function is to exit with zero code. More functions will be available later.
+
 Versioning Notes
 ----------------
 This project's versioning follows the [Semantic Versioning 2.0.0][semver] specification.
