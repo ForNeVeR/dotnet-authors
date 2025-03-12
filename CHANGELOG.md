@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keep-a-changelog], and this project adheres to [Semantic Versioning][semver]. See [the README file][docs.readme] for more details on how it is versioned.
 
-## [Unreleased] (0.0.0)
+## [0.0.0] - 2025-03-12
 This is the first version of the tool. It does nothing, prepared to bootstrap the automated publishing process and leave an anchor to track further changes.
 
 [docs.readme]: README.md
