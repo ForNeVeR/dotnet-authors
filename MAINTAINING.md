@@ -9,5 +9,6 @@ Maintainer Guide
 
 Publish a New Version
 ---------------------
-1. Update the copyright statement in the `LICENSE.txt` file, if required.
-2. Push a tag in form of `v<VERSION>`, e.g. `v0.0.0`.
+1. Update the project's status in the `README.md` file, if required.
+2. Update the copyright statement in the `LICENSE.txt` file, if required.
+3. Push a tag in form of `v<VERSION>`, e.g. `v0.0.0`.

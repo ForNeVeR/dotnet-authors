@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2024-2025 Friedrich von Never <friedrich@fornever.me>
+#
+# SPDX-License-Identifier: MIT
+
+version = 1
+SPDX-PackageName = "dotnet-authors"
+SPDX-PackageSupplier = "Friedrich von Never <friedrich@fornever.me>"
+SPDX-PackageDownloadLocation = "https://github.com/ForNeVeR/dotnet-authors"
+
+[[annotations]]
+path = ".idea/**/**"
+precedence = "override"
+SPDX-FileCopyrightText = "2025 Friedrich von Never <friedrich@fornever.me>"
+SPDX-License-Identifier = "MIT"

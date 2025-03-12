@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		MAINTAINING.md = MAINTAINING.md
 		CONTRIBUTING.md = CONTRIBUTING.md
+		REUSE.toml = REUSE.toml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{2F483791-AC0B-4B69-B137-BF5600A1269D}"
