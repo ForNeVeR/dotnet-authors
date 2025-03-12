@@ -46,7 +46,7 @@ jobs:
           files: |-
             ./DotNetAuthors/bin/Release/FVNever.DotNetAuthors.${{ steps.version.outputs.version }}.nupkg
             ./DotNetAuthors/bin/Release/FVNever.DotNetAuthors.${{ steps.version.outputs.version }}.snupkg
-          name: dotnet-licenses v${{ steps.version.outputs.version }}
+          name: dotnet-authors v${{ steps.version.outputs.version }}
       - if: startsWith(github.ref, 'refs/tags/v')
         name: Push artifact to NuGet
         run: dotnet nuget push ./DotNetAuthors/bin/Release/FVNever.DotNetAuthors.${{ steps.version.outputs.version }}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_TOKEN }}
