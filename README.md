@@ -4,7 +4,7 @@ SPDX-FileCopyrightText: 2025 Friedrich von Never <friedrich@fornever.me>
 SPDX-License-Identifier: MIT
 -->
 
-dotnet-authors [![Status Zero][status-zero]][andivionian-status-classifier]
+dotnet-authors [![Status Zero][status-zero]][andivionian-status-classifier] [![NuGet package][nuget.badge]][nuget.page]
 ==============
 This is a tool for OSS projects to keep the project author list and update copyright statements in the project files whenever they are changed.
 
@@ -55,6 +55,8 @@ The license indication in the project's sources is compliant with the [REUSE spe
 [docs.contributing]: CONTRIBUTING.md
 [docs.license]: LICENSE.txt
 [docs.maintaining]: MAINTAINING.md
+[nuget.badge]: https://img.shields.io/nuget/v/FVNever.DotNetAuthors
+[nuget.page]: https://www.nuget.org/packages/FVNever.DotNetAuthors
 [reuse.spec]: https://reuse.software/spec-3.3/
 [semver]: https://semver.org/spec/v2.0.0.html
 [status-zero]: https://img.shields.io/badge/status-zero-lightgrey.svg
