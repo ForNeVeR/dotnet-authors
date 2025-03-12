@@ -22,6 +22,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DotNetAuthors", "DotNetAuthors\DotNetAuthors.fsproj", "{B804C77B-9A0E-4464-9718-5027C6F3C427}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{51235C4E-4D37-434E-8C2E-0F965CF888BE}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\Get-Version.ps1 = scripts\Get-Version.ps1
+		scripts\Test-Encoding.ps1 = scripts\Test-Encoding.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
