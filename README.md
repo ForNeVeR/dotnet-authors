@@ -6,7 +6,14 @@ SPDX-License-Identifier: MIT
 
 dotnet-authors [![Status Zero][status-zero]][andivionian-status-classifier] [![NuGet package][nuget.badge]][nuget.page]
 ==============
-This is a tool for OSS projects to keep the project author list and update copyright statements in the project files whenever they are changed.
+Supporting an open-source project means fulfilling some tasks that are not always pleasant.
+
+One of the less pleasant tasks is maintaining accurate copyright statements and contributor lists across project files.
+As projects grow, manually updating copyright years and tracking all contributors becomes time-consuming and
+error-prone. This tool aims to automate these maintenance tasks by helping project maintainers keep copyright statements
+up-to-date and maintain accurate lists of project contributors.
+
+It will allow to perform hassle-free, asynchronous updates of all the related metadata, and send pull-requests when something requires changes.
 
 Installation
 ------------
