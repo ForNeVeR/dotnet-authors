@@ -19,6 +19,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{36939B4F-6E31-42BE-BEC8-B0C97783DDFD}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\main.yml = .github\workflows\main.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DotNetAuthors", "DotNetAuthors\DotNetAuthors.fsproj", "{B804C77B-9A0E-4464-9718-5027C6F3C427}"
@@ -28,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{5123
 		scripts\Get-Version.ps1 = scripts\Get-Version.ps1
 		scripts\Test-Encoding.ps1 = scripts\Test-Encoding.ps1
 	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DotNetAuthors.Tests", "DotNetAuthors.Tests\DotNetAuthors.Tests.fsproj", "{C6AF43DB-7418-4717-BF83-19A8E918C1C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,5 +48,9 @@ Global
 		{B804C77B-9A0E-4464-9718-5027C6F3C427}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B804C77B-9A0E-4464-9718-5027C6F3C427}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B804C77B-9A0E-4464-9718-5027C6F3C427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6AF43DB-7418-4717-BF83-19A8E918C1C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6AF43DB-7418-4717-BF83-19A8E918C1C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6AF43DB-7418-4717-BF83-19A8E918C1C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6AF43DB-7418-4717-BF83-19A8E918C1C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

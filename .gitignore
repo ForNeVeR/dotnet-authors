@@ -2,7 +2,12 @@
 #
 # SPDX-License-Identifier: MIT
 
-/.idea/
-
+# Build system items:
 bin/
 obj/
+
+# JetBrains Rider:
+/.idea/
+
+# Various IDE items:
+*.user
