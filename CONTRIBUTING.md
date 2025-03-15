@@ -29,6 +29,7 @@ $ dotnet test
 
 License Automation
 ------------------
+<!-- REUSE-IgnoreStart -->
 If the CI asks you to update the file licenses, follow one of these:
 1. Update the headers manually (look at the existing files), something like this:
    ```fsharp
@@ -43,6 +44,7 @@ If the CI asks you to update the file licenses, follow one of these:
    ```
 
 (Feel free to attribute the changes to the "dotnet-licenses contributors <https://github.com/ForNeVeR/dotnet-licenses>" instead of your name in a multi-author file, or if you don't want your name to be mentioned in the project's source: this doesn't mean you'll lose the copyright.)
+<!-- REUSE-IgnoreEnd -->
 
 [dotnet-sdk]: https://dotnet.microsoft.com/en-us/download
 [reuse]: https://reuse.software/

@@ -34,8 +34,8 @@ After installation, the tool will be available in shell as `dotnet authors`.
 
 For now, its only function is to exit with zero code. More functions will be available later.
 
-Versioning Notes
-----------------
+Versioning Policy
+-----------------
 This project's versioning follows the [Semantic Versioning 2.0.0][semver] specification.
 
 When considering compatible changes, we currently consider the project's public API is the command-line interface:
