@@ -7,17 +7,16 @@ module DotNetAuthors.Tests.TestFramework
 open System.IO
 open System.Threading
 open System.Threading.Tasks
-open DotNetAuthors
+open Fenrir.Git
 open Medallion.Shell
 open TruePath
 
 let private TestRepositoryRemote = "https://github.com/ForNeVeR/team-explorer-everywhere.git"
 let private TestRepositoryCommitSha = "5a07ff83130e12be69cc59295c81eb1f58a90c27"
-// let private TestRepositoryCommitSha = "06e7f86f27403603e2eeb63ebf4a00778c8a1791"
 let private TestRepositoryName = "team-explorer-everywhere"
 let private AccessMutex = new SemaphoreSlim(1)
 
-let private RunGit(workDirectory: AbsolutePath, arguments: string[]) = task {
+let RunGit(workDirectory: AbsolutePath, arguments: string[]) = task {
     let arguments' = arguments |> Seq.map (fun x -> x :> obj)
     let command = Command.Run(
         "git",
@@ -32,16 +31,18 @@ let private RunGit(workDirectory: AbsolutePath, arguments: string[]) = task {
     if not result.Success then
         let arguments = String.concat " " arguments
         failwithf $"Error {result.ExitCode} executing command git {arguments}.\nStandard output: {result.StandardOutput}\nStandard error: {result.StandardError}"
+    return result
 }
 
 let private CloneTestRepository(path: AbsolutePath)= task {
     Directory.CreateDirectory path.Value |> ignore
 
     // https://stackoverflow.com/a/3489576/2684760
-    do! RunGit(path, [| "init" |])
-    do! RunGit(path, [| "remote"; "add"; "origin"; TestRepositoryRemote |])
-    do! RunGit(path, [| "fetch"; "origin"; TestRepositoryCommitSha |])
-    do! RunGit(path, [| "reset"; "--hard"; TestRepositoryCommitSha |])
+    let! _ = RunGit(path, [| "init" |])
+    let! _ = RunGit(path, [| "remote"; "add"; "origin"; TestRepositoryRemote |])
+    let! _ = RunGit(path, [| "fetch"; "origin"; TestRepositoryCommitSha |])
+    let! _ = RunGit(path, [| "reset"; "--hard"; TestRepositoryCommitSha |])
+    return ()
 }
 
 let EnsureTestRepositoryCheckedOut(): Task<AbsolutePath> = task {
@@ -51,8 +52,8 @@ let EnsureTestRepositoryCheckedOut(): Task<AbsolutePath> = task {
         if not <| Directory.Exists repositoryPath.Value then
             do! CloneTestRepository(repositoryPath)
         else
-            let! commit = Git.GetHeadCommit repositoryPath
-            if commit <> Some TestRepositoryCommitSha then
+            let! commit = Refs.ReadHeadRef(LocalPath repositoryPath)
+            if not(isNull commit) then
                 Directory.Delete(repositoryPath.Value, recursive = true)
                 do! CloneTestRepository(repositoryPath)
         return repositoryPath
