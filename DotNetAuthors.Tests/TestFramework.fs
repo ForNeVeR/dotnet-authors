@@ -17,7 +17,11 @@ let private TestRepositoryName = "team-explorer-everywhere"
 let private AccessMutex = new SemaphoreSlim(1)
 
 let RunGit(workDirectory: AbsolutePath, arguments: string[]) = task {
-    let arguments' = arguments |> Seq.map (fun x -> x :> obj)
+    let arguments' = seq {
+        // To properly process long paths on Windows:
+        yield "-c" :> obj; yield "core.longpaths=true"
+        yield! arguments |> Seq.map(fun x -> x :> obj)
+    }
     let command = Command.Run(
         "git",
         arguments',
