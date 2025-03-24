@@ -12,7 +12,7 @@ open Medallion.Shell
 open TruePath
 
 let private TestRepositoryRemote = "https://github.com/ForNeVeR/team-explorer-everywhere.git"
-let private TestRepositoryCommitSha = "5a07ff83130e12be69cc59295c81eb1f58a90c27"
+let private TestRepositoryCommitSha = Sha1Hash.OfHexString "5a07ff83130e12be69cc59295c81eb1f58a90c27"
 let private TestRepositoryName = "team-explorer-everywhere"
 let private AccessMutex = new SemaphoreSlim(1)
 
@@ -45,10 +45,27 @@ let private CloneTestRepository(path: AbsolutePath)= task {
     // https://stackoverflow.com/a/3489576/2684760
     let! _ = RunGit(path, [| "init" |])
     let! _ = RunGit(path, [| "remote"; "add"; "origin"; TestRepositoryRemote |])
-    let! _ = RunGit(path, [| "fetch"; "origin"; TestRepositoryCommitSha |])
-    let! _ = RunGit(path, [| "reset"; "--hard"; TestRepositoryCommitSha |])
+    let! _ = RunGit(path, [| "fetch"; "origin"; TestRepositoryCommitSha.ToString() |])
+    let! _ = RunGit(path, [| "reset"; "--hard"; TestRepositoryCommitSha.ToString() |])
     return ()
 }
+
+let private DeleteDirectory(path: AbsolutePath) =
+    Directory.EnumerateFileSystemEntries(
+        path.Value,
+        "*",
+        EnumerationOptions(
+            RecurseSubdirectories = true,
+            AttributesToSkip = EnumerationOptions().AttributesToSkip ^^^ FileAttributes.Hidden
+        )
+    )
+    |> Seq.iter(fun filePath ->
+        let attributes = File.GetAttributes filePath
+        if attributes.HasFlag FileAttributes.ReadOnly then
+            File.SetAttributes(filePath, attributes ^^^ FileAttributes.ReadOnly)
+    )
+
+    Directory.Delete(path.Value, recursive = true)
 
 let EnsureTestRepositoryCheckedOut(): Task<AbsolutePath> = task {
     try
@@ -57,9 +74,10 @@ let EnsureTestRepositoryCheckedOut(): Task<AbsolutePath> = task {
         if not <| Directory.Exists repositoryPath.Value then
             do! CloneTestRepository(repositoryPath)
         else
-            let! commit = Refs.ReadHead(LocalPath repositoryPath)
-            if not(isNull commit) then
-                Directory.Delete(repositoryPath.Value, recursive = true)
+            let! commit = Refs.ReadHead(LocalPath repositoryPath / ".git")
+            let currentHash = commit |> ValueOption.ofObj |> ValueOption.map _.CommitObjectId
+            if currentHash <> ValueSome TestRepositoryCommitSha then
+                DeleteDirectory repositoryPath
                 do! CloneTestRepository(repositoryPath)
         return repositoryPath
     finally
