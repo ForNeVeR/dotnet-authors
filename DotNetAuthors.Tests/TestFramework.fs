@@ -28,7 +28,8 @@ let RunGit(workDirectory: AbsolutePath, arguments: string[]) = task {
         options = (fun (opts: Shell.Options) ->
             opts.WorkingDirectory(workDirectory.Value)
                 // NOSYSTEM here to avoid starting the FS monitor daemon that might lock the files from deletion
-                .EnvironmentVariable("GIT_CONFIG_NOSYSTEM", "1") |> ignore
+                .EnvironmentVariable("GIT_CONFIG_NOSYSTEM", "1")
+                .EnvironmentVariable("GIT_CONFIG_GLOBAL", "") |> ignore
         )
     )
     let! result = command.Task
