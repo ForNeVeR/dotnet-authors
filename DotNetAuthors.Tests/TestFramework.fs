@@ -27,7 +27,7 @@ let RunGit(workDirectory: AbsolutePath, arguments: string[]) = task {
         arguments',
         options = (fun (opts: Shell.Options) ->
             opts.WorkingDirectory(workDirectory.Value)
-                // NOSYSTEM here to avoid starting FS monitor daemon that might lock the files from deletion
+                // NOSYSTEM here to avoid starting the FS monitor daemon that might lock the files from deletion
                 .EnvironmentVariable("GIT_CONFIG_NOSYSTEM", "1") |> ignore
         )
     )
@@ -56,7 +56,7 @@ let EnsureTestRepositoryCheckedOut(): Task<AbsolutePath> = task {
         if not <| Directory.Exists repositoryPath.Value then
             do! CloneTestRepository(repositoryPath)
         else
-            let! commit = Refs.ReadHeadRef(LocalPath repositoryPath)
+            let! commit = Refs.ReadHead(LocalPath repositoryPath)
             if not(isNull commit) then
                 Directory.Delete(repositoryPath.Value, recursive = true)
                 do! CloneTestRepository(repositoryPath)
