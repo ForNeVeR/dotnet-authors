@@ -35,6 +35,8 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup>
         <Compile Include="Git.fs" />
+        <Compile Include="Commit.fs" />
+        <Compile Include="CommitRange.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
