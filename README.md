@@ -47,6 +47,10 @@ When considering compatible changes, we currently consider the project's public 
 
 Documentation
 -------------
+### Technical Documentation
+- [Commit Ranges][docs.commit-ranges]
+
+### Project Documentation
 - [Changelog][docs.changelog]
 - [Contributor Guide][docs.contributing]
 - [Maintainer Guide][docs.maintaining]
@@ -59,6 +63,7 @@ The license indication in the project's sources is compliant with the [REUSE spe
 
 [andivionian-status-classifier]: https://andivionian.fornever.me/v1/#status-zero-
 [docs.changelog]: CHANGELOG.md
+[docs.commit-ranges]: docs/commit-ranges.md
 [docs.contributing]: CONTRIBUTING.md
 [docs.license]: LICENSE.txt
 [docs.maintaining]: MAINTAINING.md

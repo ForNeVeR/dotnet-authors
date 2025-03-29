@@ -32,6 +32,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{5123
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DotNetAuthors.Tests", "DotNetAuthors.Tests\DotNetAuthors.Tests.fsproj", "{C6AF43DB-7418-4717-BF83-19A8E918C1C8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{63DF46A2-513B-4267-AC49-23D50A11EEC1}"
+	ProjectSection(SolutionItems) = preProject
+		docs\commit-ranges.md = docs\commit-ranges.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
