@@ -1,9 +1,16 @@
 namespace DotNetAuthors
 
 open System.Collections.Generic
+open Fenrir.Git
 
-type CommitRange(head: IReadOnlyList<Commit>, exTail: IReadOnlyList<Commit>) =
+[<Struct>]
+type CommitRangeBorder =
+    | Sha1 of Sha1Hash
+    /// A virtual root for any orphaned commits.
+    | VirtualRoot
+
+type CommitRange(head: IReadOnlyList<Sha1Hash>, exTail: IReadOnlyList<CommitRangeBorder>) =
     do if head.Count = 0 then failwithf "Head commit list should not be empty."
 
-    member _.Head: IReadOnlyList<Commit> = head
-    member _.ExTail: IReadOnlyList<Commit> = exTail
+    member _.Head: IReadOnlyList<Sha1Hash> = head
+    member _.ExTail: IReadOnlyList<CommitRangeBorder> = exTail
