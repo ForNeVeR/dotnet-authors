@@ -30,7 +30,6 @@ let GetAuthorDate(commit: Commit): DateTimeOffset =
     let offsetValue = TimeSpan.ParseExact(offset.Substring(1), "hhmm", CultureInfo.InvariantCulture)
     DateTimeOffset.FromUnixTimeSeconds(time).ToOffset(offsetValue * offsetSign)
 
-
 let ReadCommits (logger: ILogger) (repositoryBase: AbsolutePath): Task<string[]> = task {
     let gitDirectory = repositoryBase / ".git" |> LocalPath
 

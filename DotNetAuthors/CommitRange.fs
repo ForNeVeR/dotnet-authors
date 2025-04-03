@@ -18,8 +18,16 @@ type CommitRange(head: IReadOnlyList<Sha1Hash>, exTail: Set<CommitRangeBorder>) 
     do if head.Count = 0 then failwithf "Head commit list should not be empty."
     do if exTail.Count = 0 then failwithf "Exclusive tail commit set should not be empty." // TODO: test
 
-    let byAuthorDate = Comparer.Create(fun commitA commitB -> compare(GetAuthorDate commitA) (GetAuthorDate commitB))
+    let byAuthorDate = Comparer.Create(fun commitA commitB -> -compare(GetAuthorDate commitA) (GetAuthorDate commitB))
 
+    /// <summary>
+    /// <para>Will return the commits in frontal order, from the closest to the head to the closest to the tail.</para>
+    /// <para>Any parent commit will be ahead of its children.</para>
+    /// <para>
+    ///     Sibling commits will be ordered in reverse chronological order (oldest first), sorted by the author
+    ///     date.
+    /// </para>
+    /// </summary>
     member _.ApplyToRepository(repoRoot: AbsolutePath): AsyncSeq<Commit> =
         asyncSeq {
             use ld = new LifetimeDefinition()
@@ -32,6 +40,7 @@ type CommitRange(head: IReadOnlyList<Sha1Hash>, exTail: Set<CommitRangeBorder>) 
             let headCommits = SortedSet byAuthorDate // TODO: Figure out if this maintains stable sort order.
                                                      // TODO: Most likely this will break on duplicate dates.
                                                      // TODO: Invent an order to stably sort duplicates somehow.
+                                                     //       (maybe just sort by hashes if the dates are equal?)
             do!
                 head
                 |> AsyncSeq.ofSeq
