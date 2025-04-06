@@ -12,10 +12,11 @@ SPDX-License-Identifier: MIT
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="GitTests.fs" />
         <Compile Include="TestFramework.fs" />
         <Compile Include="CommitRangeTests.fs" />
         <Compile Include="CommitTraversalTests.fs" />
+        <Compile Include="ComplexCommitRangeTests.fs" />
+        <Compile Include="GitTests.fs" />
     </ItemGroup>
 
     <ItemGroup>
