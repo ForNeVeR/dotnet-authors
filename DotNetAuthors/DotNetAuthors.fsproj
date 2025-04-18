@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
       <PackageReference Include="ChangelogAutomation.MSBuild" Version="2.0.0" />
       <PackageReference Include="Fenrir.Git" Version="1.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
-      <PackageReference Include="TruePath" Version="1.6.0" />
+      <PackageReference Include="TruePath" Version="1.7.0" />
     </ItemGroup>
 
 </Project>
