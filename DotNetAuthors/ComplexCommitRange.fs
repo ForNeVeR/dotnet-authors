@@ -10,6 +10,6 @@ type ComplexCommitRange =
       Excluded: IReadOnlyList<CommitRange> }
 
     /// Normalizes the range.
-    member _.Normalize(): Task<CommitRange> = failwithf "TODO"
+    member _.Normalize(): Task<ComplexCommitRange> = failwithf "TODO"
 
     member _.ApplyToRepository(): AsyncSeq<Commit> = failwithf "TODO"
