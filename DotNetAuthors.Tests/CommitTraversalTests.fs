@@ -34,7 +34,7 @@ type CommitTraversalTests(output: ITestOutputHelper) =
     }
 
     [<Fact>]
-    member _.``File authors for single commit``(): Task = task {
+    member _.``File contributing commits for single commit``(): Task = task {
         let! testRepoBase = EnsureTestRepositoryCheckedOut()
         let rootCommit = Sha1Hash.OfHexString "3751d9cd1ea573af7d37efcec5292cf36d8def98"
         let! contributingCommits = Git.GetCommitsPerFile (Git.Repository testRepoBase) rootCommit
@@ -42,7 +42,7 @@ type CommitTraversalTests(output: ITestOutputHelper) =
     }
 
     [<Fact>]
-    member _.``File authors for multiple commits``(): Task = task {
+    member _.``File contributing commits for multiple commits``(): Task = task {
         let! testRepoBase = EnsureTestRepositoryCheckedOut()
         let rootCommit = Sha1Hash.OfHexString "3751d9cd1ea573af7d37efcec5292cf36d8def98"
         let secondCommit = Sha1Hash.OfHexString "367c1cd310239fc4c86786ec71d6281c152968cb"
