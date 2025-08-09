@@ -37,7 +37,7 @@ let private printFilteredCommits filter =
 let private printCommitsForAllFiles() =
     printFilteredCommits(fun path -> (AbsolutePath.CurrentWorkingDirectory / path).ReadKind().HasValue)
 
-let printCommits filePath =
+let private printCommits filePath =
     printFilteredCommits(fun path -> path = filePath)
 
 [<EntryPoint>]
