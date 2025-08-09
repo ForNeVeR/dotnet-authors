@@ -32,7 +32,12 @@ Usage
 -----
 After installation, the tool will be available in shell as `dotnet authors`.
 
-For now, its only function is to exit with zero code. More functions will be available later.
+Always run the program from the repository root.
+
+Usage:
+- `--version` - print the program version.
+- `--help` - print this message.
+- `commits [file]` - print commits contributed to a file (or all files in repo by default).
 
 Versioning Policy
 -----------------

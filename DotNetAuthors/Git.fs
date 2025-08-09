@@ -4,16 +4,19 @@
 
 module DotNetAuthors.Git
 
+open System.Collections.Generic
 open System.Threading.Tasks
 open FSharp.Control
 open Fenrir.Git
+open JetBrains.Lifetimes
 open Microsoft.Extensions.Logging
 open TruePath
 
-let ReadCommits (logger: ILogger) (repositoryBase: AbsolutePath): Task<string[]> = task {
-    let gitDirectory = repositoryBase / ".git" |> LocalPath
+type Repository(root: AbsolutePath) =
+    member val DotGit = root / ".git" |> LocalPath
 
-    let! head = Refs.ReadHead(gitDirectory)
+let ReadCommits (logger: ILogger) (repository: Repository): Task<string[]> = task {
+    let! head = Refs.ReadHead repository.DotGit
     let headCommit = ValueOption.ofObj head |> ValueOption.map _.CommitObjectId
     logger.LogTrace(
         "Head commit {Commit}.",
@@ -24,9 +27,44 @@ let ReadCommits (logger: ILogger) (repositoryBase: AbsolutePath): Task<string[]>
         |> ValueOption.toArray
         |> AsyncSeq.ofSeq
         |> AsyncSeq.collect(fun hash ->
-            Commits.TraverseCommits(gitDirectory, hash)
+            Commits.TraverseCommits(repository.DotGit, hash)
             |> AsyncSeq.ofAsyncEnum
         )
         |> AsyncSeq.map(_.Hash.ToString())
         |> AsyncSeq.toArrayAsync
+}
+
+let GetCommitsPerFile (repository: Repository)
+                      (startCommit: Sha1Hash)
+                      : Task<Dictionary<LocalPath, ResizeArray<Sha1Hash>>> = task {
+    let commits = Commits.TraverseCommits(repository.DotGit, startCommit)
+
+    let mergeState (map: IDictionary<LocalPath, ResizeArray<Sha1Hash>>) newFiles newCommit =
+        for file in newFiles do
+            let array =
+                match map.TryGetValue file with
+                | true, array -> array
+                | false, _ ->
+                    let array = ResizeArray()
+                    map.Add(file, array)
+                    array
+            array.Add newCommit
+
+    return! Lifetime.UsingAsync(fun lt -> task {
+        let index = PackIndex(lt, repository.DotGit)
+        let! _, fullFileMap =
+            commits
+            |> AsyncSeq.ofAsyncEnum
+            |> AsyncSeq.mapAsync(fun commit -> Async.AwaitTask <| Trees.ReadFull index repository.DotGit commit)
+            |> AsyncSeq.fold (fun (prevTree, resultMap) nextTree ->
+                let diff =
+                    prevTree
+                    |> Option.map(fun prevTree -> Trees.Diff prevTree nextTree)
+                    |> Option.defaultWith(fun() -> nextTree.Files.Keys)
+
+                mergeState resultMap diff nextTree.CommitHash
+                Some nextTree, resultMap
+            ) (None, Dictionary())
+        return fullFileMap
+    })
 }
