@@ -37,6 +37,7 @@ Always run the program from the repository root.
 Usage:
 - `--version` - print the program version.
 - `--help` - print this message.
+- `authors [file]` - print authors contributed to a file (or all files in repo by default).
 - `commits [file]` - print commits contributed to a file (or all files in repo by default).
 
 Versioning Policy

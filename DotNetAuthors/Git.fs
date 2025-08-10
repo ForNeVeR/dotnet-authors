@@ -6,8 +6,10 @@ module DotNetAuthors.Git
 
 open System.Collections.Generic
 open System.Threading.Tasks
+open DotNetAuthors.Commits
 open FSharp.Control
 open Fenrir.Git
+open Fenrir.Git.Metadata
 open JetBrains.Lifetimes
 open Microsoft.Extensions.Logging
 open TruePath
@@ -34,21 +36,10 @@ let ReadCommits (logger: ILogger) (repository: Repository): Task<string[]> = tas
         |> AsyncSeq.toArrayAsync
 }
 
-let GetCommitsPerFile (repository: Repository)
-                      (startCommit: Sha1Hash)
-                      : Task<Dictionary<LocalPath, ResizeArray<Sha1Hash>>> = task {
+let private ProcessFiles (repository: Repository)
+                         (startCommit: Sha1Hash)
+                         mergeState = task {
     let commits = Commits.TraverseCommits(repository.DotGit, startCommit)
-
-    let mergeState (map: IDictionary<LocalPath, ResizeArray<Sha1Hash>>) newFiles newCommit =
-        for file in newFiles do
-            let array =
-                match map.TryGetValue file with
-                | true, array -> array
-                | false, _ ->
-                    let array = ResizeArray()
-                    map.Add(file, array)
-                    array
-            array.Add newCommit
 
     return! Lifetime.UsingAsync(fun lt -> task {
         let index = PackIndex(lt, repository.DotGit)
@@ -62,9 +53,41 @@ let GetCommitsPerFile (repository: Repository)
                     |> Option.map(fun prevTree -> Trees.Diff prevTree nextTree)
                     |> Option.defaultWith(fun() -> nextTree.Files.Keys)
 
-                mergeState resultMap diff nextTree.CommitHash
+                mergeState resultMap diff nextTree.Commit
                 Some nextTree, resultMap
             ) (None, Dictionary())
         return fullFileMap
     })
 }
+
+let GetCommitsPerFile (repository: Repository)
+                      (startCommit: Sha1Hash)
+                      : Task<Dictionary<LocalPath, ResizeArray<Sha1Hash>>> =
+    let mergeState (map: IDictionary<LocalPath, ResizeArray<Sha1Hash>>) newFiles (newCommit: Commit) =
+        for file in newFiles do
+            let array =
+                match map.TryGetValue file with
+                | true, array -> array
+                | false, _ ->
+                    let array = ResizeArray()
+                    map.Add(file, array)
+                    array
+            array.Add newCommit.Hash
+
+    ProcessFiles repository startCommit mergeState
+
+let GetAuthorsPerFile (repository: Repository)
+                      (startCommit: Sha1Hash)
+                      : Task<Dictionary<LocalPath, HashSet<GitAuthor>>> =
+    let mergeState (map: IDictionary<LocalPath, HashSet<GitAuthor>>) newFiles (newCommit: Commit) =
+        for file in newFiles do
+            let set =
+                match map.TryGetValue file with
+                | true, set -> set
+                | false, _ ->
+                    let set = HashSet()
+                    map.Add(file, set)
+                    set
+            ignore(set.Add(GetAuthor newCommit))
+
+    ProcessFiles repository startCommit mergeState
