@@ -11,7 +11,7 @@ open Fenrir.Git.Metadata
 open TruePath
 
 type CommitTree = {
-    CommitHash: Sha1Hash
+    Commit: Commit
     Files: IReadOnlyDictionary<LocalPath, Sha1Hash>
 }
 
@@ -35,7 +35,7 @@ let ReadFull (index: PackIndex) (dotGit: LocalPath) (commit: Commit): Task<Commi
     let files = Dictionary()
     do! AppendFilesFromSubTree(index, dotGit, commit.Body.Tree, None, files)
     return {
-        CommitHash = commit.Hash
+        Commit = commit
         Files = files
     }
 }

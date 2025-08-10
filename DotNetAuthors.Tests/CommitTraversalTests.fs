@@ -4,8 +4,12 @@
 
 namespace DotNetAuthors.Tests
 
+open System
+open System.Security.Cryptography
+open System.Text
 open System.Threading.Tasks
 open DotNetAuthors
+open DotNetAuthors.Commits
 open DotNetAuthors.Tests.TestFramework
 open Fenrir.Git
 open Meziantou.Extensions.Logging.Xunit
@@ -50,4 +54,35 @@ type CommitTraversalTests(output: ITestOutputHelper) =
         Assert.Equivalent([| rootCommit; secondCommit |], contributingCommits[LocalPath "README.md"])
         Assert.Equal([| secondCommit |], contributingCommits[LocalPath ".gitignore"])
         Assert.Equal([| secondCommit |], contributingCommits[LocalPath "build/.gitignore"])
+    }
+
+    [<Fact>]
+    member _.``Authors contributing commits``(): Task = task {
+        let sha256(s: string | null) =
+            match s with
+            | null -> ""
+            | s ->
+
+            use sha256 = SHA256.Create()
+            let bytes = Encoding.UTF8.GetBytes(s)
+            let hash = sha256.ComputeHash(bytes)
+            Convert.ToHexString hash
+
+        let! testRepoBase = EnsureTestRepositoryCheckedOut()
+        let secondCommit = Sha1Hash.OfHexString "367c1cd310239fc4c86786ec71d6281c152968cb"
+        let! contributingCommits = Git.GetAuthorsPerFile (Git.Repository testRepoBase) secondCommit
+        let assertAuthor1(a: GitAuthor) = // compare hashes to not expose other people's emails in our code
+            Assert.Equal("David Staheli", a.Name)
+            Assert.Equal("91B948ADED5F83812F6F2308F44E15CE41A12786F16FFE37C66524AF3C7D1D53", sha256 a.Email)
+        let assertAuthor2(a: GitAuthor) =
+            Assert.Equal("Microsoft GitHub User", a.Name)
+            Assert.Equal("87E5C9B285C4C2EF84DAE798C1D05709106E01715D080F90D9FC19AA313D6E92", sha256 a.Email)
+
+        Assert.Collection<GitAuthor>(
+            contributingCommits[LocalPath "README.md"] |> Seq.sortBy _.Email,
+            assertAuthor1,
+            assertAuthor2
+        )
+        assertAuthor1(contributingCommits[LocalPath ".gitignore"] |> Seq.exactlyOne)
+        assertAuthor1(contributingCommits[LocalPath "build/.gitignore"] |> Seq.exactlyOne)
     }
