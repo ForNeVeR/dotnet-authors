@@ -11,8 +11,8 @@ type GitAuthor = {
 let private authorRegex = Regex("author (.*?) <(.*?)> .*?", RegexOptions.Compiled)
 
 let GetAuthor(commit: Commit): GitAuthor =
-    // TODO: Support author + committer as well?
-    // TODO: Support Co-authored-by as well
+    // TODO[#52]: Support author + committer as well?
+    // TODO[#52]: Support Co-authored-by as well
 
     match commit.Body.Rest |> Seq.filter(_.StartsWith("author ")) |> Seq.tryHead with
     | None -> { Name = null; Email = null }
