@@ -34,15 +34,18 @@ SPDX-License-Identifier: MIT
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="Config.fs" />
         <Compile Include="Trees.fs" />
         <Compile Include="Commits.fs" />
         <Compile Include="Git.fs" />
+        <Compile Include="Commands.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="ChangelogAutomation.MSBuild" Version="3.0.3" />
       <PackageReference Include="Fenrir.Git" Version="1.0.0" />
+      <PackageReference Include="FVNever.Reuse" Version="1.1.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
       <PackageReference Include="TruePath" Version="1.10.0" />
     </ItemGroup>

@@ -30,7 +30,7 @@ type CommitTraversalTests(output: ITestOutputHelper) =
 
     [<Fact>]
     member _.``Commit count should be correct``(): Task = task {
-        let! testRepoBase = EnsureTestRepositoryCheckedOut()
+        let! testRepoBase = CloneTeamExplorerEverywhere()
         let! commits = Git.ReadCommits logger (Git.Repository testRepoBase)
         let! nativeCommits = CountCommitsUsingSystemClient testRepoBase
         Assert.True(nativeCommits > 0, $"Native commit count should be greater than zero but was {nativeCommits}.")
@@ -39,7 +39,7 @@ type CommitTraversalTests(output: ITestOutputHelper) =
 
     [<Fact>]
     member _.``File contributing commits for single commit``(): Task = task {
-        let! testRepoBase = EnsureTestRepositoryCheckedOut()
+        let! testRepoBase = CloneTeamExplorerEverywhere()
         let rootCommit = Sha1Hash.OfHexString "3751d9cd1ea573af7d37efcec5292cf36d8def98"
         let! contributingCommits = Git.GetCommitsPerFile (Git.Repository testRepoBase) rootCommit
         Assert.Equal([| rootCommit |], contributingCommits[LocalPath "README.md"])
@@ -47,7 +47,7 @@ type CommitTraversalTests(output: ITestOutputHelper) =
 
     [<Fact>]
     member _.``File contributing commits for multiple commits``(): Task = task {
-        let! testRepoBase = EnsureTestRepositoryCheckedOut()
+        let! testRepoBase = CloneTeamExplorerEverywhere()
         let rootCommit = Sha1Hash.OfHexString "3751d9cd1ea573af7d37efcec5292cf36d8def98"
         let secondCommit = Sha1Hash.OfHexString "367c1cd310239fc4c86786ec71d6281c152968cb"
         let! contributingCommits = Git.GetCommitsPerFile (Git.Repository testRepoBase) secondCommit
@@ -68,7 +68,7 @@ type CommitTraversalTests(output: ITestOutputHelper) =
             let hash = sha256.ComputeHash(bytes)
             Convert.ToHexString hash
 
-        let! testRepoBase = EnsureTestRepositoryCheckedOut()
+        let! testRepoBase = CloneTeamExplorerEverywhere()
         let secondCommit = Sha1Hash.OfHexString "367c1cd310239fc4c86786ec71d6281c152968cb"
         let! contributingCommits = Git.GetAuthorsPerFile (Git.Repository testRepoBase) secondCommit
         let assertAuthor1(a: GitAuthor) = // compare hashes to not expose other people's emails in our code
