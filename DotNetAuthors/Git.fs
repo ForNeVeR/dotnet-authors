@@ -15,6 +15,7 @@ open Microsoft.Extensions.Logging
 open TruePath
 
 type Repository(root: AbsolutePath) =
+    member val Root = root
     member val DotGit = root / ".git" |> LocalPath
 
 let ReadCommits (logger: ILogger) (repository: Repository): Task<string[]> = task {
