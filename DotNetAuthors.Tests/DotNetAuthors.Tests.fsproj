@@ -15,6 +15,7 @@ SPDX-License-Identifier: MIT
         <Compile Include="CommitTests.fs" />
         <Compile Include="TestFramework.fs" />
         <Compile Include="CommandTests.fs" />
+        <Compile Include="ConfigTests.fs" />
         <Compile Include="CommitTraversalTests.fs" />
     </ItemGroup>
 
