@@ -4,6 +4,7 @@
 
 module DotNetAuthors.Commits
 
+open System
 open System.Text.RegularExpressions
 open Fenrir.Git.Metadata
 
@@ -12,9 +13,14 @@ type GitAuthor = {
     Email: string | null
 }
 
+type GitContributionInfo = {
+    Author: GitAuthor
+    Date: DateTimeOffset
+}
+
 let private authorRegex = Regex("author (.*?) <(.*?)> .*?", RegexOptions.Compiled)
 
-let GetAuthor(commit: Commit): GitAuthor =
+let GetAuthor(commit: Commit): GitContributionInfo =
     // TODO[#52]: Support author + committer as well?
     // TODO[#52]: Support Co-authored-by as well
 

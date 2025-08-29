@@ -10,8 +10,9 @@ open FVNever.Reuse
 open Fenrir.Git
 open TruePath
 
+/// Accepts data from files and from the metadata source; returns the collection of entries to patch.
 let PatchMetadata (metadata: ReuseFileEntry seq)
-                  (authors: IReadOnlyDictionary<LocalPath, #IReadOnlySet<Commits.GitAuthor>>): ReuseFileEntry seq =
+                  (authors: IReadOnlyDictionary<AbsolutePath, #IReadOnlySet<ContributionInfo>>): ReuseFileEntry seq =
     failwithf "TODO"
 
 let private ApplyMetadata (metadata: ReuseFileEntry seq) = task {
