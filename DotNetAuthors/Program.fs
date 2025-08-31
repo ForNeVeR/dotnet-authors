@@ -53,7 +53,7 @@ let private printFilteredAuthors filter =
     task {
          let repository = Git.Repository AbsolutePath.CurrentWorkingDirectory
          let! headCommit = Refs.ReadHead repository.DotGit
-         let! fileAuthors = Git.GetAuthorsPerFile repository (nonNull headCommit).CommitObjectId
+         let! fileAuthors = Git.GetContributorsPerFile repository (nonNull headCommit).CommitObjectId
          fileAuthors
          |> Seq.sortBy _.Key.Value
          |> Seq.filter(fun kvp -> filter kvp.Key)

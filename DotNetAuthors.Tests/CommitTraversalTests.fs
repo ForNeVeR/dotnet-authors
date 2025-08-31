@@ -70,7 +70,7 @@ type CommitTraversalTests(output: ITestOutputHelper) =
 
         let! testRepoBase = CloneTeamExplorerEverywhere()
         let secondCommit = Sha1Hash.OfHexString "367c1cd310239fc4c86786ec71d6281c152968cb"
-        let! contributingCommits = Git.GetAuthorsPerFile (Git.Repository testRepoBase) secondCommit
+        let! contributingCommits = Git.GetContributorsPerFile (Git.Repository testRepoBase) secondCommit
         let assertAuthor1(a: GitAuthor) = // compare hashes to not expose other people's emails in our code
             Assert.Equal("David Staheli", a.Name)
             Assert.Equal("91B948ADED5F83812F6F2308F44E15CE41A12786F16FFE37C66524AF3C7D1D53", sha256 a.Email)

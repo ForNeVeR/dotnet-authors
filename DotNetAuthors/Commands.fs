@@ -6,13 +6,14 @@ module DotNetAuthors.Commands
 
 open System.Collections.Generic
 open System.Threading.Tasks
+open DotNetAuthors.Commits
 open FVNever.Reuse
 open Fenrir.Git
 open TruePath
 
 /// Accepts data from files and from the metadata source; returns the collection of entries to patch.
 let PatchMetadata (metadata: ReuseFileEntry seq)
-                  (authors: IReadOnlyDictionary<AbsolutePath, #IReadOnlySet<ContributionInfo>>): ReuseFileEntry seq =
+                  (authors: IReadOnlyDictionary<AbsolutePath, #IReadOnlySet<GitContributionInfo>>): ReuseFileEntry seq =
     failwithf "TODO"
 
 let private ApplyMetadata (metadata: ReuseFileEntry seq) = task {
@@ -27,7 +28,13 @@ let WriteAuthorMetadata(config: Config, repository: Git.Repository): Task = task
     | headCommit ->
 
     let! currentMetadata = ReuseDirectory.ReadEntries repository.Root
-    let! actualAuthors = Git.GetAuthorsPerFile repository headCommit.CommitObjectId
-    let patch = PatchMetadata currentMetadata actualAuthors
+    let! actualContributors = Git.GetContributorsPerFile repository headCommit.CommitObjectId
+    let mappedContributions = Dictionary()
+    for kvp in actualContributors do
+        let path = repository.Root / kvp.Key
+        let contributors = kvp.Value
+        mappedContributions.Add(path, contributors)
+
+    let patch = PatchMetadata currentMetadata mappedContributions
     return! ApplyMetadata patch
 }

@@ -77,10 +77,10 @@ let GetCommitsPerFile (repository: Repository)
 
     ProcessFiles repository startCommit mergeState
 
-let GetAuthorsPerFile (repository: Repository)
+let GetContributorsPerFile (repository: Repository)
                       (startCommit: Sha1Hash)
-                      : Task<Dictionary<LocalPath, HashSet<GitAuthor>>> =
-    let mergeState (map: IDictionary<LocalPath, HashSet<GitAuthor>>) newFiles (newCommit: Commit) =
+                      : Task<Dictionary<LocalPath, HashSet<GitContributionInfo>>> =
+    let mergeState (map: IDictionary<LocalPath, HashSet<GitContributionInfo>>) newFiles (newCommit: Commit) =
         for file in newFiles do
             let set =
                 match map.TryGetValue file with
@@ -89,6 +89,7 @@ let GetAuthorsPerFile (repository: Repository)
                     let set = HashSet()
                     map.Add(file, set)
                     set
-            ignore(set.Add(GetAuthor newCommit))
+            GetContributors newCommit
+            |> Seq.iter(set.Add >> ignore)
 
     ProcessFiles repository startCommit mergeState

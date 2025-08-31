@@ -18,7 +18,7 @@ let private doTest bodyLines expectedAuthor expectedEmail =
             Rest = bodyLines
         }
     }
-    let author = GetAuthor commit
+    let author = GetContributors commit
     Assert.Equal({
         Name = expectedAuthor
         Email = expectedEmail
