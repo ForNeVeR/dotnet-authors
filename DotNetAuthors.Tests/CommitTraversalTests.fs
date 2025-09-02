@@ -71,18 +71,20 @@ type CommitTraversalTests(output: ITestOutputHelper) =
         let! testRepoBase = CloneTeamExplorerEverywhere()
         let secondCommit = Sha1Hash.OfHexString "367c1cd310239fc4c86786ec71d6281c152968cb"
         let! contributingCommits = Git.GetContributorsPerFile (Git.Repository testRepoBase) secondCommit
-        let assertAuthor1(a: GitAuthor) = // compare hashes to not expose other people's emails in our code
+        let assertContribution1(a: GitContribution) = // compare hashes to not expose other people's emails in our code
+            Assert.Equal(DateTimeOffset(0L, TimeSpan.Zero), a.Date)
             Assert.Equal("David Staheli", a.Name)
             Assert.Equal("91B948ADED5F83812F6F2308F44E15CE41A12786F16FFE37C66524AF3C7D1D53", sha256 a.Email)
-        let assertAuthor2(a: GitAuthor) =
+        let assertContribution2(a: GitContribution) =
+            Assert.Equal(DateTimeOffset(0L, TimeSpan.Zero), a.Date)
             Assert.Equal("Microsoft GitHub User", a.Name)
             Assert.Equal("87E5C9B285C4C2EF84DAE798C1D05709106E01715D080F90D9FC19AA313D6E92", sha256 a.Email)
 
-        Assert.Collection<GitAuthor>(
+        Assert.Collection<GitContribution>(
             contributingCommits[LocalPath "README.md"] |> Seq.sortBy _.Email,
-            assertAuthor1,
-            assertAuthor2
+            assertContribution1,
+            assertContribution2
         )
-        assertAuthor1(contributingCommits[LocalPath ".gitignore"] |> Seq.exactlyOne)
-        assertAuthor1(contributingCommits[LocalPath "build/.gitignore"] |> Seq.exactlyOne)
+        assertContribution1(contributingCommits[LocalPath ".gitignore"] |> Seq.exactlyOne)
+        assertContribution1(contributingCommits[LocalPath "build/.gitignore"] |> Seq.exactlyOne)
     }

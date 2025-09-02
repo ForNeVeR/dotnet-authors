@@ -79,8 +79,8 @@ let GetCommitsPerFile (repository: Repository)
 
 let GetContributorsPerFile (repository: Repository)
                       (startCommit: Sha1Hash)
-                      : Task<Dictionary<LocalPath, HashSet<GitContributionInfo>>> =
-    let mergeState (map: IDictionary<LocalPath, HashSet<GitContributionInfo>>) newFiles (newCommit: Commit) =
+                      : Task<Dictionary<LocalPath, HashSet<GitContribution>>> =
+    let mergeState (map: IDictionary<LocalPath, HashSet<GitContribution>>) newFiles (newCommit: Commit) =
         for file in newFiles do
             let set =
                 match map.TryGetValue file with

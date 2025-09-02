@@ -13,7 +13,7 @@ open TruePath
 
 /// Accepts data from files and from the metadata source; returns the collection of entries to patch.
 let PatchMetadata (metadata: ReuseFileEntry seq)
-                  (authors: IReadOnlyDictionary<AbsolutePath, #IReadOnlySet<GitContributionInfo>>): ReuseFileEntry seq =
+                  (authors: IReadOnlyDictionary<AbsolutePath, #IReadOnlySet<GitContribution>>): ReuseFileEntry seq =
     failwithf "TODO"
 
 let private ApplyMetadata (metadata: ReuseFileEntry seq) = task {

@@ -4,12 +4,13 @@
 
 module DotNetAuthors.Tests.CommitTests
 
+open System
 open DotNetAuthors.Commits
 open Fenrir.Git
 open Fenrir.Git.Metadata
 open Xunit
 
-let private doTest bodyLines expectedAuthor expectedEmail =
+let private doTest bodyLines expectedData =
     let commit = {
         Hash = Sha1Hash.Zero
         Body = {
@@ -19,17 +20,23 @@ let private doTest bodyLines expectedAuthor expectedEmail =
         }
     }
     let author = GetContributors commit
-    Assert.Equal({
-        Name = expectedAuthor
-        Email = expectedEmail
-    }, author)
+    Assert.Equal<GitContribution>(
+        expectedData |> Seq.map(fun(date, name, email) -> {
+            Date = date
+            Name = name
+            Email = email
+        }),
+        author
+    )
 
 [<Fact>]
 let ``Commit parser without author``(): unit =
     doTest [|
         ""
         "Some test changes"
-    |] null null
+    |] Array.empty
+
+let private time = DateTimeOffset(2025, 10, 1, 0, 0, 0, TimeSpan.FromHours -5)
 
 [<Fact>]
 let ``Commit parser without name``(): unit =
@@ -37,7 +44,7 @@ let ``Commit parser without name``(): unit =
         "author  <friedrich@fornever.me> 1457121723 -0500"
         ""
         "Some test changes"
-    |] "" "friedrich@fornever.me"
+    |] [| time, "", "friedrich@fornever.me" |]
 
 [<Fact>]
 let ``Commit parser without email``(): unit =
@@ -45,7 +52,7 @@ let ``Commit parser without email``(): unit =
         "author Friedrich von Never <> 1457121723 -0500"
         ""
         "Some test changes"
-    |] "Friedrich von Never" ""
+    |] [| time, "Friedrich von Never", "" |]
 
 [<Fact>]
 let ``Commit parser without name and email``(): unit =
@@ -54,6 +61,6 @@ let ``Commit parser without name and email``(): unit =
             "author 1457121723 -0500"
             ""
             "Initial source commit"
-        |] null null
+        |] [| time, "Friedrich von Never", "" |]
     )
     Assert.Equal("Invalid commit author line: author 1457121723 -0500", ex.Message)

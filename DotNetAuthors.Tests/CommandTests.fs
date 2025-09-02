@@ -65,7 +65,7 @@ let ``PatchMetadata provides a correct patch``(): unit =
         let entry p y =
             KeyValuePair(
                 path p,
-                HashSet([|{ Author = { Name = "Test"; Email = "test@example.com" }; Date = year y }|])
+                HashSet([|{ Date = year y; Name = "Test"; Email = "test@example.com" }|])
             )
         entry "1" 2025
         entry "2" 2023

@@ -8,13 +8,9 @@ open System
 open System.Text.RegularExpressions
 open Fenrir.Git.Metadata
 
-type GitAuthor = {
+type GitContribution = {
     Name: string
     Email: string
-}
-
-type GitContributionInfo = {
-    Author: GitAuthor
     Date: DateTimeOffset
 }
 
@@ -37,7 +33,7 @@ let private parseDate (d: string) =
         .FromUnixTimeSeconds(unixTimestampSec)
         .ToOffset timeOffset
 
-let GetContributors (commit: Commit): GitContributionInfo seq =
+let GetContributors (commit: Commit): GitContribution seq =
     // TODO[#52]: Support different author + committer as well?
     // TODO[#52]: Support Co-authored-by as well
 
@@ -47,6 +43,6 @@ let GetContributors (commit: Commit): GitContributionInfo seq =
 
     let m = authorRegex.Match authorLine
     if m.Success then
-        { Date = parseDate m.Groups[3].Value; Author ={ Name = m.Groups[1].Value; Email = m.Groups[2].Value } }
+        { Date = parseDate m.Groups[3].Value; Name = m.Groups[1].Value; Email = m.Groups[2].Value }
         |> Seq.singleton
     else failwithf $"Invalid commit author line: {authorLine}"
