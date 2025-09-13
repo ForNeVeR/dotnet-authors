@@ -14,7 +14,7 @@ type GitContribution = {
     Date: DateTimeOffset
 }
 
-let private authorRegex = Regex("author (.*?) <(.*?)> (.*?)", RegexOptions.Compiled)
+let private authorRegex = Regex("author (.*?) <(.*?)> (.*)", RegexOptions.Compiled)
 
 let private parseDate (d: string) =
     let components = d.Split(' ', 2)

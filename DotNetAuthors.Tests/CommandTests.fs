@@ -12,6 +12,26 @@ open TruePath
 open Xunit
 
 [<Fact>]
+let ``UpdateCopyrightStatements should generate a new entry``(): unit =
+    failwithf "TODO"
+
+[<Fact>]
+let ``UpdateCopyrightStatements should update the entry year``(): unit =
+    failwithf "TODO"
+
+[<Fact>]
+let ``UpdateCopyrightStatements should replace an entry with a group entry``(): unit =
+    failwithf "TODO"
+
+[<Fact>]
+let ``UpdateCopyrightStatements should not replace an identical entry``(): unit =
+    failwithf "TODO"
+
+[<Fact>]
+let ``UpdateCopyrightStatements should not replace a contained entry``(): unit =
+    failwithf "TODO"
+
+[<Fact>]
 let ``authors-to-metadata works correctly``(): Task = task {
     let configuration = {
         DefaultAuthorGroup = "LogList contributors <https://github.com/codingteam/loglist>"
@@ -19,7 +39,7 @@ let ``authors-to-metadata works correctly``(): Task = task {
 
     let! repo = TestFramework.CloneLogList()
 
-    let repository = Git.Repository AbsolutePath.CurrentWorkingDirectory
+    let repository = Git.Repository repo
     do! WriteAuthorMetadata(configuration, repository)
 
     let! data = ReuseDirectory.ReadEntries repo
