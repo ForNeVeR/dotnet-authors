@@ -46,7 +46,7 @@ jobs:
         timeout-minutes: 10
       - if: always()
         name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results.${{ runner.os }}
           path: '**/TestResults/**'
