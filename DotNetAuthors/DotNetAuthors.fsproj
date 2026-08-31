@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
 
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackAsTool>true</PackAsTool>
-        <ToolCommandName>dotnet-licenses</ToolCommandName>
+        <ToolCommandName>dotnet-authors</ToolCommandName>
     </PropertyGroup>
 
     <PropertyGroup>
